@@ -82,9 +82,9 @@ INSERT INTO `kosten`.`palabraClave` (`nombre`) VALUES
 INSERT INTO `kosten`.`usuario` 
   (`dni`, `email`, `password`, `nombre`, `apellido`, `legajo`, `rol_idRol`, `sector_idSector`, `estadoU_idEstadoU`, `cargo_idCargo`) 
 VALUES
-(12345678, 'admin@unpa.edu.ar', 'admin', 'Admin', 'Dev', 101, 1, 1, 1, 1),
-(23456789, 'editor@unpa.edu.ar', 'editor', 'Editor', 'Dev', 102, 2, 2, 1, 2),
-(34567890, 'jorgito@unpa.edu.ar', 'jorgito', 'Jorgito', 'Gpt', 103, 3, 3, 2, 3);
+(12345678, 'admin@unpa.edu.ar', '$2a$10$cndBvd4ghY7PGnC5AWjNVOOQ/2MuRQdzIcnemmjYT4YRnHCsU1GAa', 'Admin', 'Dev', 101, 1, 1, 1, 1),
+(23456789, 'editor@unpa.edu.ar', '$2a$10$g5rd4eCVXlZQeXfx2p89g.O1D/9iEwMZk8JGUxcAUmZ.W1jJd1muq', 'Editor', 'Dev', 102, 2, 2, 1, 2),
+(34567890, 'jorgito@unpa.edu.ar', '', 'Jorgito', 'Gpt', 103, 3, 3, 2, 3);
 
 
 -- -----------------------------------------------------
@@ -166,7 +166,7 @@ INSERT INTO `kosten`.`etiqueta` (`documento_idDocumento`, `palabraClave_idPalabr
 
 -- DOC 9: Nuevo Protocolo de Bioseguridad 2025
 INSERT INTO `kosten`.`documento` (`titulo`, `resumen`, `fechaCreacion`, `numDocumento`, `tipoDocumento_idTipoDocumento`, `estado_idestado`, `sector_idSector`) VALUES
-('Nuevo Protocolo de Bioseguridad 2025', 'Se establece el nuevo protocolo de bioseguridad para el ciclo lectivo 2025, derogando normativas anteriores.', '2025-02-20', 1, 5, 1, 4);
+('Nuevo Protocolo de Bioseguridad 2025', 'Se establece el nuevo protocolo de bioseguridad para el ciclo lectivo 2025, derogando normativas anteriores.', '2025-02-20', 5, 5, 1, 4);
 SET @doc9_id = LAST_INSERT_ID();
 INSERT INTO `kosten`.`registro` (`fechaCarga`, `usuario_idUsuario`, `documento_idDocumento`) VALUES ('2025-02-21', 2, @doc9_id);
 INSERT INTO `kosten`.`archivo` (`nombre`, `url`, `documento_idDocumento`) VALUES ('ORD-2025-001-CS.pdf', '/archivos/ORD-2025-001-CS.pdf', @doc9_id);
@@ -186,13 +186,12 @@ INSERT INTO `kosten`.`etiqueta` (`documento_idDocumento`, `palabraClave_idPalabr
 -- -----------------------------------------------------
 -- E. Inserción de `referencia` (Relaciones Cruzadas Finales)
 -- -----------------------------------------------------
-INSERT INTO `kosten`.`referencia` (`documento_idDocumento1`, `documento_idDocumento`) VALUES
+INSERT INTO `kosten`.`referencia` (`documento_idDocumentoOrigen`, `documento_idDocumentoReferencial`) VALUES
 (@doc7_id, @doc4_id),
 (@doc8_id, @doc1_id),
 (@doc9_id, @doc5_id),
 (@doc10_id, @doc1_id),
 (@doc10_id, @doc3_id);
-
 
 -- -----------------------------------------------------
 -- F. Restaurar el estado inicial de las comprobaciones
