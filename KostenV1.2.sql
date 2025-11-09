@@ -158,7 +158,7 @@ CREATE TABLE IF NOT EXISTS `kosten`.`documento` (
   `titulo` VARCHAR(300) NOT NULL,
   `resumen` VARCHAR(600) NOT NULL,
   `fechaCreacion` DATE NOT NULL,
-  `numDocumento` INT NOT NULL,
+  `numDocumento` varchar(45) NOT NULL,
   `tipoDocumento_idTipoDocumento` INT NOT NULL,
   `estado_idestado` INT NOT NULL,
   `sector_idSector` INT NOT NULL,
