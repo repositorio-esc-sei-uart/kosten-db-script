@@ -1,12 +1,8 @@
 -- =======================================================
 -- PASO 1: CONFIGURACIÓN INICIAL Y LIMPIEZA
 -- =======================================================
-
--- Deshabilitar temporalmente las comprobaciones de FK y UNICOS
 SET FOREIGN_KEY_CHECKS = 0; 
 SET UNIQUE_CHECKS = 0;
-
--- Limpieza de Tablas (TRUNCATE resetea AUTO_INCREMENT)
 TRUNCATE TABLE `kosten`.`etiqueta`;
 TRUNCATE TABLE `kosten`.`referencia`;
 TRUNCATE TABLE `kosten`.`registro`;
@@ -20,8 +16,8 @@ TRUNCATE TABLE `kosten`.`estadoU`;
 TRUNCATE TABLE `kosten`.`tipoDocumento`;
 TRUNCATE TABLE `kosten`.`estado`;
 TRUNCATE TABLE `kosten`.`palabraClave`;
-
-
+-- (Aquí van tus INSERTs de catálogos: rol, cargo, sector, etc...)
+-- ... (los dejé fuera por brevedad, pero deben estar aquí) ...
 -- -----------------------------------------------------
 -- B. Inserción de Catálogos (IDs Implícitos)
 -- -----------------------------------------------------
@@ -53,11 +49,11 @@ INSERT INTO `kosten`.`estadoU` (`nombre`, `descripcion`) VALUES
 
 -- `tipoDocumento`
 INSERT INTO `kosten`.`tipoDocumento` (`nombre`, `descripcion`) VALUES
-('Acuerdos', 'acuerdos'),
-('Resoluciones', 'resoluciones'),
-('Disposiciones', 'disposiciones'),
-('Circulares', 'circulares'),
-('Ordenanzas', 'ordenanzas');
+('Acuerdo', 'acuerdos'),
+('Resolución', 'resoluciones'),
+('Disposición', 'disposiciones'),
+('Circular', 'circulares'),
+('Ordenanza', 'ordenanzas');
 
 -- `estado`
 INSERT INTO `kosten`.`estado` (`nombre`, `descripcion`) VALUES
@@ -86,105 +82,103 @@ VALUES
 (23456789, 'editor@unpa.edu.ar', '$2a$10$g5rd4eCVXlZQeXfx2p89g.O1D/9iEwMZk8JGUxcAUmZ.W1jJd1muq', 'Editor', 'Dev', 102, 2, 2, 1, 2),
 (34567890, 'jorgito@unpa.edu.ar', '', 'Jorgito', 'Gpt', 103, 3, 3, 2, 3);
 
-
 -- -----------------------------------------------------
 -- D. Inserción de `documento` y sus dependencias (Documentos 1-10)
 -- -----------------------------------------------------
 
 -- Variables para IDs de Documentos
-SET @doc1_id = 0; SET @doc2_id = 0; SET @doc3_id = 0; SET @doc4_id = 0; SET @doc5_id = 0;
-SET @doc6_id = 0; SET @doc7_id = 0; SET @doc8_id = 0; SET @doc9_id = 0; SET @doc10_id = 0;
+-- Asumimos los IDs porque TRUNCATE reinicia el contador.
+SET @doc1_id = 1; SET @doc2_id = 2; SET @doc3_id = 3; SET @doc4_id = 4; SET @doc5_id = 5;
+SET @doc6_id = 6; SET @doc7_id = 7; SET @doc8_id = 8; SET @doc9_id = 9; SET @doc10_id = 10;
 
 -- DOC 1: Aprobación Presupuesto Anual 2024
 INSERT INTO `kosten`.`documento` (`titulo`, `resumen`, `fechaCreacion`, `numDocumento`, `tipoDocumento_idTipoDocumento`, `estado_idestado`, `sector_idSector`) VALUES
 ('Aprobación Presupuesto Anual 2024', 'Se aprueban las partidas presupuestarias para el ejercicio fiscal del año 2024', '2024-10-15', 'RES-2024-101-UART', 2, 1, 1);
-SET @doc1_id = LAST_INSERT_ID();
+-- (Omitimos LAST_INSERT_ID() porque ya seteamos @doc1_id = 1)
 INSERT INTO `kosten`.`registro` (`fechaCarga`, `usuario_idUsuario`, `documento_idDocumento`) VALUES ('2024-10-16', 2, @doc1_id);
-INSERT INTO `kosten`.`archivo` (`nombre`, `url`, `documento_idDocumento`) VALUES ('RES-2024-101-UART.pdf', '/archivos/RES-2024-101-UART.pdf', @doc1_id);
+-- (URL corregida con la ruta "sharded" basada en el ID 1)
+INSERT INTO `kosten`.`archivo` (`nombre`, `url`, `documento_idDocumento`) VALUES 
+('RES-2024-101-UART.pdf', 'documentos/000/000/001/RES-2024-101-UART.pdf', @doc1_id);
 INSERT INTO `kosten`.`etiqueta` (`documento_idDocumento`, `palabraClave_idPalabraClave`) VALUES (@doc1_id, 1), (@doc1_id, 2), (@doc1_id, 3), (@doc1_id, 4);
 
 -- DOC 2: Designación de Nuevo Personal
 INSERT INTO `kosten`.`documento` (`titulo`, `resumen`, `fechaCreacion`, `numDocumento`, `tipoDocumento_idTipoDocumento`, `estado_idestado`, `sector_idSector`) VALUES
-('Designación de Nuevo Personal', 'Nombramiento de personal administrativo para el área de secretaría académica.', '2024-10-12', 'RES-2024-52-UART', 3, 1, 2);
-SET @doc2_id = LAST_INSERT_ID();
+('Designación de Nuevo Personal', 'Nombramiento de personal administrativo para el área de secretaría académica.', '2024-10-12', 'DIS-2024-52-UART', 3, 1, 2);
 INSERT INTO `kosten`.`registro` (`fechaCarga`, `usuario_idUsuario`, `documento_idDocumento`) VALUES ('2024-10-13', 2, @doc2_id);
+-- (URL corregida con la ruta "sharded" basada en el ID 2)
 INSERT INTO `kosten`.`archivo` (`nombre`, `url`, `documento_idDocumento`) VALUES 
-('DIS-2024-052-UART.pdf', '/archivos/DIS-2024-052-UART.pdf', @doc2_id),
-('DIS-2024-052-UART anexo A.pdf', '/archivos/DIS-2024-052-UART-anexo-A.pdf', @doc2_id);
+('DIS-2024-052-UART.pdf', 'documentos/000/000/002/DIS-2024-052-UART.pdf', @doc2_id),
+('DIS-2024-052-UART anexo A.pdf', 'documentos/000/000/002/DIS-2024-052-UART anexo A.pdf', @doc2_id);
 INSERT INTO `kosten`.`etiqueta` (`documento_idDocumento`, `palabraClave_idPalabraClave`) VALUES (@doc2_id, 5), (@doc2_id, 6), (@doc2_id, 7), (@doc2_id, 8);
-
 
 -- DOC 3: Llamado a Licitación Pública N°5
 INSERT INTO `kosten`.`documento` (`titulo`, `resumen`, `fechaCreacion`, `numDocumento`, `tipoDocumento_idTipoDocumento`, `estado_idestado`, `sector_idSector`) VALUES
 ('Llamado a Licitación Pública N°5', 'Convocatoria para la licitación del servicio de mantenimiento de infraestructura edilicia.', '2024-10-11', 'RES-2024-102-UART', 2, 1, 3);
-SET @doc3_id = LAST_INSERT_ID();
 INSERT INTO `kosten`.`registro` (`fechaCarga`, `usuario_idUsuario`, `documento_idDocumento`) VALUES ('2024-10-12', 2, @doc3_id);
-INSERT INTO `kosten`.`archivo` (`nombre`, `url`, `documento_idDocumento`) VALUES ('RES-2024-102-UART.pdf', '/archivos/RES-2024-102-UART.pdf', @doc3_id);
+INSERT INTO `kosten`.`archivo` (`nombre`, `url`, `documento_idDocumento`) VALUES 
+('RES-2024-102-UART.pdf', 'documentos/000/000/003/RES-2024-102-UART.pdf', @doc3_id);
 INSERT INTO `kosten`.`etiqueta` (`documento_idDocumento`, `palabraClave_idPalabraClave`) VALUES (@doc3_id, 9), (@doc3_id, 10), (@doc3_id, 11), (@doc3_id, 12);
-
 
 -- DOC 4: Calendario Académico 2025
 INSERT INTO `kosten`.`documento` (`titulo`, `resumen`, `fechaCreacion`, `numDocumento`, `tipoDocumento_idTipoDocumento`, `estado_idestado`, `sector_idSector`) VALUES
-('Calendario Académico 2025', 'Establecimiento de las fechas de inicio, finalización de cuatrimestres y mesas de examen.', '2024-09-30', 'RES-2024-3-UART', 5, 2, 4);
-SET @doc4_id = LAST_INSERT_ID();
+('Calendario Académico 2025', 'Establecimiento de las fechas de inicio, finalización de cuatrimestres y mesas de examen.', '2024-09-30', 'ORD-2024-003-CS', 5, 2, 4);
 INSERT INTO `kosten`.`registro` (`fechaCarga`, `usuario_idUsuario`, `documento_idDocumento`) VALUES ('2024-10-01', 2, @doc4_id);
-INSERT INTO `kosten`.`archivo` (`nombre`, `url`, `documento_idDocumento`) VALUES ('ORD-2024-003-CS.pdf', '/archivos/ORD-2024-003-CS.pdf', @doc4_id);
+INSERT INTO `kosten`.`archivo` (`nombre`, `url`, `documento_idDocumento`) VALUES 
+('ORD-2024-003-CS.pdf', 'documentos/000/000/004/ORD-2024-003-CS.pdf', @doc4_id);
 INSERT INTO `kosten`.`etiqueta` (`documento_idDocumento`, `palabraClave_idPalabraClave`) VALUES (@doc4_id, 13), (@doc4_id, 14), (@doc4_id, 15), (@doc4_id, 16);
-
 
 -- DOC 5: Protocolo de Bioseguridad
 INSERT INTO `kosten`.`documento` (`titulo`, `resumen`, `fechaCreacion`, `numDocumento`, `tipoDocumento_idTipoDocumento`, `estado_idestado`, `sector_idSector`) VALUES
-('Protocolo de Bioseguridad', 'Actualización de las medidas y protocolos de seguridad e higiene para los laboratorios.', '2024-09-25', 'RES-2024-15-UART', 4, 3, 5);
-SET @doc5_id = LAST_INSERT_ID();
+('Protocolo de Bioseguridad', 'Actualización de las medidas y protocolos de seguridad e higiene para los laboratorios.', '2024-09-25', 'CIR-2024-015-UART', 4, 3, 5);
 INSERT INTO `kosten`.`registro` (`fechaCarga`, `usuario_idUsuario`, `documento_idDocumento`) VALUES ('2024-09-26', 2, @doc5_id);
-INSERT INTO `kosten`.`archivo` (`nombre`, `url`, `documento_idDocumento`) VALUES ('CIR-2024-015-UART.pdf', '/archivos/CIR-2024-015-UART.pdf', @doc5_id);
+INSERT INTO `kosten`.`archivo` (`nombre`, `url`, `documento_idDocumento`) VALUES 
+('CIR-2024-015-UART.pdf', 'documentos/000/000/005/CIR-2024-015-UART.pdf', @doc5_id);
 INSERT INTO `kosten`.`etiqueta` (`documento_idDocumento`, `palabraClave_idPalabraClave`) VALUES (@doc5_id, 17), (@doc5_id, 18), (@doc5_id, 19), (@doc5_id, 20);
 
 -- DOC 6: Modificación Plan de Estudios
 INSERT INTO `kosten`.`documento` (`titulo`, `resumen`, `fechaCreacion`, `numDocumento`, `tipoDocumento_idTipoDocumento`, `estado_idestado`, `sector_idSector`) VALUES
-('Modificación Plan de Estudios', 'Ajustes en la currícula de la carrera de Analista de Sistemas.', '2024-09-22', 'RES-2024-4-UART', 5, 1, 4);
-SET @doc6_id = LAST_INSERT_ID();
+('Modificación Plan de Estudios', 'Ajustes en la currícula de la carrera de Analista de Sistemas.', '2024-09-22', 'ORD-2024-004-CS', 5, 1, 4);
 INSERT INTO `kosten`.`registro` (`fechaCarga`, `usuario_idUsuario`, `documento_idDocumento`) VALUES ('2024-09-23', 2, @doc6_id);
-INSERT INTO `kosten`.`archivo` (`nombre`, `url`, `documento_idDocumento`) VALUES ('ORD-2024-004-CS.pdf', '/archivos/ORD-2024-004-CS.pdf', @doc6_id);
+INSERT INTO `kosten`.`archivo` (`nombre`, `url`, `documento_idDocumento`) VALUES 
+('ORD-2024-004-CS.pdf', 'documentos/000/000/006/ORD-2024-004-CS.pdf', @doc6_id);
 INSERT INTO `kosten`.`etiqueta` (`documento_idDocumento`, `palabraClave_idPalabraClave`) VALUES (@doc6_id, 21), (@doc6_id, 22), (@doc6_id, 23), (@doc6_id, 24), (@doc6_id, 25);
 
 -- DOC 7: Rectificación de Fechas Calendario 2025
 INSERT INTO `kosten`.`documento` (`titulo`, `resumen`, `fechaCreacion`, `numDocumento`, `tipoDocumento_idTipoDocumento`, `estado_idestado`, `sector_idSector`) VALUES
-('Rectificación de Fechas Calendario 2025', 'Se rectifican las fechas de mesas de examen del segundo cuatrimestre del Calendario Académico 2025.', '2025-03-10', 'RES-2024-1-UART', 2, 1, 4);
-SET @doc7_id = LAST_INSERT_ID();
+('Rectificación de Fechas Calendario 2025', 'Se rectifican las fechas de mesas de examen del segundo cuatrimestre del Calendario Académico 2025.', '2025-03-10', 'RES-2025-001-CS', 2, 1, 4);
 INSERT INTO `kosten`.`registro` (`fechaCarga`, `usuario_idUsuario`, `documento_idDocumento`) VALUES ('2025-03-11', 2, @doc7_id);
-INSERT INTO `kosten`.`archivo` (`nombre`, `url`, `documento_idDocumento`) VALUES ('RES-2025-001-CS.pdf', '/archivos/RES-2025-001-CS.pdf', @doc7_id);
+INSERT INTO `kosten`.`archivo` (`nombre`, `url`, `documento_idDocumento`) VALUES 
+('RES-2025-001-CS.pdf', 'documentos/000/000/007/RES-2025-001-CS.pdf', @doc7_id);
 INSERT INTO `kosten`.`etiqueta` (`documento_idDocumento`, `palabraClave_idPalabraClave`) VALUES (@doc7_id, 26), (@doc7_id, 15), (@doc7_id, 13), (@doc7_id, 16);
 
 -- DOC 8: Creación Comisión de Seguimiento Presupuestario
 INSERT INTO `kosten`.`documento` (`titulo`, `resumen`, `fechaCreacion`, `numDocumento`, `tipoDocumento_idTipoDocumento`, `estado_idestado`, `sector_idSector`) VALUES
-('Creación Comisión de Seguimiento Presupuestario', 'Se crea una comisión ad-hoc para el seguimiento de la ejecución de las partidas del Presupuesto Anual 2024.', '2024-11-05', 'RES-2024-80-UART', 3, 1, 1);
-SET @doc8_id = LAST_INSERT_ID();
+('Creación Comisión de Seguimiento Presupuestario', 'Se crea una comisión ad-hoc para el seguimiento de la ejecución de las partidas del Presupuesto Anual 2024.', '2024-11-05', 'DIS-2024-080-UART', 3, 1, 1);
 INSERT INTO `kosten`.`registro` (`fechaCarga`, `usuario_idUsuario`, `documento_idDocumento`) VALUES ('2024-11-06', 2, @doc8_id);
-INSERT INTO `kosten`.`archivo` (`nombre`, `url`, `documento_idDocumento`) VALUES ('DIS-2024-080-UART.pdf', '/archivos/DIS-2024-080-UART.pdf', @doc8_id);
+INSERT INTO `kosten`.`archivo` (`nombre`, `url`, `documento_idDocumento`) VALUES 
+('DIS-2024-080-UART.pdf', 'documentos/000/000/008/DIS-2024-080-UART.pdf', @doc8_id);
 INSERT INTO `kosten`.`etiqueta` (`documento_idDocumento`, `palabraClave_idPalabraClave`) VALUES (@doc8_id, 27), (@doc8_id, 28), (@doc8_id, 29), (@doc8_id, 30);
 
 -- DOC 9: Nuevo Protocolo de Bioseguridad 2025
 INSERT INTO `kosten`.`documento` (`titulo`, `resumen`, `fechaCreacion`, `numDocumento`, `tipoDocumento_idTipoDocumento`, `estado_idestado`, `sector_idSector`) VALUES
-('Nuevo Protocolo de Bioseguridad 2025', 'Se establece el nuevo protocolo de bioseguridad para el ciclo lectivo 2025, derogando normativas anteriores.', '2025-02-20', 'RES-2024-5-UART', 5, 1, 4);
-SET @doc9_id = LAST_INSERT_ID();
+('Nuevo Protocolo de Bioseguridad 2025', 'Se establece el nuevo protocolo de bioseguridad para el ciclo lectivo 2025, derogando normativas anteriores.', '2025-02-20', 'ORD-2025-001-CS', 5, 1, 4);
 INSERT INTO `kosten`.`registro` (`fechaCarga`, `usuario_idUsuario`, `documento_idDocumento`) VALUES ('2025-02-21', 2, @doc9_id);
-INSERT INTO `kosten`.`archivo` (`nombre`, `url`, `documento_idDocumento`) VALUES ('ORD-2025-001-CS.pdf', '/archivos/ORD-2025-001-CS.pdf', @doc9_id);
+INSERT INTO `kosten`.`archivo` (`nombre`, `url`, `documento_idDocumento`) VALUES 
+('ORD-2025-001-CS.pdf', 'documentos/000/000/009/ORD-2025-001-CS.pdf', @doc9_id);
 INSERT INTO `kosten`.`etiqueta` (`documento_idDocumento`, `palabraClave_idPalabraClave`) VALUES (@doc9_id, 31), (@doc9_id, 17), (@doc9_id, 18), (@doc9_id, 32);
 
 -- DOC 10: Aclaratoria sobre Licitación Pública N°5
 INSERT INTO `kosten`.`documento` (`titulo`, `resumen`, `fechaCreacion`, `numDocumento`, `tipoDocumento_idTipoDocumento`, `estado_idestado`, `sector_idSector`) VALUES
-('Aclaratoria sobre Licitación Pública N°5', 'Se emite circular aclaratoria sobre los pliegos y condiciones de la Licitación Pública N°5 para mantenimiento.', '2024-10-25', 'RES-2024-20-UART', 4, 1, 3);
-SET @doc10_id = LAST_INSERT_ID();
+('Aclaratoria sobre Licitación Pública N°5', 'Se emite circular aclaratoria sobre los pliegos y condiciones de la Licitación Pública N°5 para mantenimiento.', '2024-10-25', 'CIR-2024-020-UART', 4, 1, 3);
 INSERT INTO `kosten`.`registro` (`fechaCarga`, `usuario_idUsuario`, `documento_idDocumento`) VALUES ('2024-10-26', 2, @doc10_id);
 INSERT INTO `kosten`.`archivo` (`nombre`, `url`, `documento_idDocumento`) VALUES 
-('CIR-2024-020-UART.pdf', '/archivos/CIR-2024-020-UART.pdf', @doc10_id),
-('CIR-2024-020-UART - anexo B.pdf', '/archivos/CIR-2024-020-UART-anexo-B.pdf', @doc10_id);
+('CIR-2024-020-UART.pdf', 'documentos/000/000/010/CIR-2024-020-UART.pdf', @doc10_id),
+('CIR-2024-020-UART - anexo B.pdf', 'documentos/000/000/010/CIR-2024-020-UART - anexo B.pdf', @doc10_id);
 INSERT INTO `kosten`.`etiqueta` (`documento_idDocumento`, `palabraClave_idPalabraClave`) VALUES (@doc10_id, 33), (@doc10_id, 9), (@doc10_id, 34), (@doc10_id, 35);
 
 
 -- -----------------------------------------------------
--- E. Inserción de `referencia` (Relaciones Cruzadas Finales)
+-- E. Inserción de `referencia` (Usando los IDs fijos)
 -- -----------------------------------------------------
 INSERT INTO `kosten`.`referencia` (`documento_idDocumentoOrigen`, `documento_idDocumentoReferencial`) VALUES
 (@doc7_id, @doc4_id),
@@ -193,6 +187,43 @@ INSERT INTO `kosten`.`referencia` (`documento_idDocumentoOrigen`, `documento_idD
 (@doc10_id, @doc1_id),
 (@doc10_id, @doc3_id);
 
+-- (Tus INSERTs de permisos y asigna van aquí...)
+-- INSERTAMOS LOS NUEVOS PERMISOS DESGLOSADOS
+INSERT INTO `kosten`.`permiso` (`nombre`, `descripcion`) VALUES
+('USER_CREATE', 'Permite crear usuarios'),
+('USER_READ', 'Permite leer la lista de usuarios'),
+('USER_UPDATE', 'Permite actualizar usuarios'),
+('USER_DELETE', 'Permite eliminar usuarios'),
+('DOCUMENT_CREATE', 'Permite crear documentos'),
+('DOCUMENT_READ', 'Permite leer documentos'),
+('DOCUMENT_UPDATE', 'Permite actualizar documentos'),
+('DOCUMENT_DELETE', 'Permite eliminar documentos');
+-- -----------------------------------------------------
+-- Data for table `kosten`.`asigna`
+-- -----------------------------------------------------
+-- Asignar permisos CRUD de USUARIOS al Administrador (Rol ID 1)
+INSERT INTO `kosten`.`asigna` (`rol_idRol`, `permiso_idpermiso`) VALUES
+(1, (SELECT idpermiso FROM permiso WHERE nombre = 'USER_CREATE')),
+(1, (SELECT idpermiso FROM permiso WHERE nombre = 'USER_READ')),
+(1, (SELECT idpermiso FROM permiso WHERE nombre = 'USER_UPDATE')),
+(1, (SELECT idpermiso FROM permiso WHERE nombre = 'USER_DELETE'));
+
+-- Asignar permisos CRUD de DOCUMENTOS al Editor (Rol ID 2)
+INSERT INTO `kosten`.`asigna` (`rol_idRol`, `permiso_idpermiso`) VALUES
+(2, (SELECT idpermiso FROM permiso WHERE nombre = 'DOCUMENT_CREATE')),
+(2, (SELECT idpermiso FROM permiso WHERE nombre = 'DOCUMENT_READ')),
+(2, (SELECT idpermiso FROM permiso WHERE nombre = 'DOCUMENT_UPDATE')),
+(2, (SELECT idpermiso FROM permiso WHERE nombre = 'DOCUMENT_DELETE'));
+
+-- Asignar permiso de LECTURA de DOCUMENTOS al Lector (Rol ID 3)
+INSERT INTO `kosten`.`asigna` (`rol_idRol`, `permiso_idpermiso`) VALUES
+(3, (SELECT idpermiso FROM permiso WHERE nombre = 'DOCUMENT_READ'));
+
+-- -----------------------------------------------------
+-- F. Restaurar el estado inicial de las comprobaciones
+-- -----------------------------------------------------
+SET UNIQUE_CHECKS = 1;
+SET FOREIGN_KEY_CHECKS = 1;
 -- -----------------------------------------------------
 -- F. Restaurar el estado inicial de las comprobaciones
 -- -----------------------------------------------------
