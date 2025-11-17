@@ -1,3 +1,4 @@
+use kosten;
 -- =======================================================
 -- PASO A: CONFIGURACIÓN INICIAL Y LIMPIEZA
 -- =======================================================
@@ -16,6 +17,8 @@ TRUNCATE TABLE `kosten`.`estadoU`;
 TRUNCATE TABLE `kosten`.`tipoDocumento`;
 TRUNCATE TABLE `kosten`.`estado`;
 TRUNCATE TABLE `kosten`.`palabraClave`;
+TRUNCATE TABLE `kosten`.`permiso`;
+TRUNCATE TABLE `kosten`.`asigna`;
 TRUNCATE TABLE `kosten`.`unidadEjecutora`; 
 
 -- B. Inserción de Catálogos 
@@ -127,7 +130,7 @@ INSERT INTO `kosten`.`documento` (`titulo`, `resumen`, `fechaCreacion`, `numDocu
 INSERT INTO `kosten`.`registro` (`fechaCarga`, `tipoOperacion`, `usuarioResponsable_idUsuario`, `documentoAfectado_idDocumento`) VALUES ('2024-10-13', 'CREAR', 2, @doc2_id);
 INSERT INTO `kosten`.`archivo` (`nombre`, `url`, `documento_idDocumento`) VALUES 
 ('D-52-24-UART.pdf', 'documentos/000/000/002/D-52-24-UART.pdf', @doc2_id),
-('D-52-24-UART-anexo-A.pdf', 'documentos/000/000/002/D-52-24-UART anexo A.pdf', @doc2_id);
+('D-52-24-UART-anexo-A.pdf', 'documentos/000/000/002/D-52-24-UART-anexo-A.pdf', @doc2_id);
 INSERT INTO `kosten`.`etiqueta` (`documento_idDocumento`, `palabraClave_idPalabraClave`) VALUES (@doc2_id, 5), (@doc2_id, 6), (@doc2_id, 7), (@doc2_id, 8);
 
 -- DOC 3: Llamado a Licitación Pública N°5 (Resolución)
@@ -200,7 +203,7 @@ INSERT INTO `kosten`.`documento` (`titulo`, `resumen`, `fechaCreacion`, `numDocu
 INSERT INTO `kosten`.`registro` (`fechaCarga`, `tipoOperacion`, `usuarioResponsable_idUsuario`, `documentoAfectado_idDocumento`) VALUES ('2024-10-26', 'CREAR', 2, @doc10_id);
 INSERT INTO `kosten`.`archivo` (`nombre`, `url`, `documento_idDocumento`) VALUES 
 ('C-020-24-UARG.pdf', 'documentos/000/000/010/C-020-24-UARG.pdf', @doc10_id),
-('C-020-24-UARG-anexo B.pdf', 'documentos/000/000/010/C-020-24-UARG - anexo B.pdf', @doc10_id);
+('C-020-24-UARG-anexo-B.pdf', 'documentos/000/000/010/C-020-24-UARG-anexo-B.pdf', @doc10_id);
 INSERT INTO `kosten`.`etiqueta` (`documento_idDocumento`, `palabraClave_idPalabraClave`) VALUES (@doc10_id, 33), (@doc10_id, 9), (@doc10_id, 34), (@doc10_id, 35);
 
 -- DOC 11: NUEVO EJEMPLO de Acuerdo (Acuerdo)
