@@ -177,6 +177,7 @@ CREATE TABLE IF NOT EXISTS `kosten`.`documento` (
   `resumen` VARCHAR(600) NOT NULL,
   `fechaCreacion` DATE NOT NULL,
   `numDocumento` varchar(45) NOT NULL,
+  `activo` boolean NOT NULL,
   `tipoDocumento_idTipoDocumento` INT UNSIGNED NOT NULL,
   `estado_idestado` INT UNSIGNED NOT NULL,
   `sector_idSector` INT UNSIGNED NOT NULL,
