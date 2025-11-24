@@ -97,8 +97,8 @@ VALUES
 -- Asumimos que el Admin (ID 1) creó a los otros dos usuarios (ID 2 y 3).
 -- (Estos IDs son fijos porque los usuarios se insertan antes)
 INSERT INTO `kosten`.`registro` (`fechaCarga`, `tipoOperacion`, `usuarioResponsable_idUsuario`, `usuarioAfectado_idUsuario`) VALUES
-('2024-10-01', 'CREAR', 1, 2),
-('2024-10-01', 'CREAR', 1, 3);
+('2024-10-01', 'Registrar', 1, 2),
+('2024-10-01', 'Registrar', 1, 3);
 
 
 -- -----------------------------------------------------
@@ -118,7 +118,7 @@ SET @doc11_id = 11; -- Añadido nuevo documento
 -- REGLA: R-numero-año-CS-UNPA
 INSERT INTO `kosten`.`documento` (`titulo`, `resumen`, `activo`, `fechaCreacion`, `numDocumento`, `tipoDocumento_idTipoDocumento`, `estado_idestado`, `sector_idSector`, `unidadEjecutora_idUnidadEjecutora`) VALUES
 ('Aprobación Presupuesto Anual 2024', 'Se aprueban las partidas presupuestarias para el ejercicio fiscal del año 2024', True, '2024-10-15', 'R-101-24-CS-UNPA', 2, 1, 1, 1);
-INSERT INTO `kosten`.`registro` (`fechaCarga`, `tipoOperacion`, `usuarioResponsable_idUsuario`, `documentoAfectado_idDocumento`) VALUES ('2024-10-16', 'CREAR', 2, @doc1_id);
+INSERT INTO `kosten`.`registro` (`fechaCarga`, `tipoOperacion`, `usuarioResponsable_idUsuario`, `documentoAfectado_idDocumento`) VALUES ('2024-10-16', 'Registrar', 2, @doc1_id);
 INSERT INTO `kosten`.`archivo` (`nombre`, `url`, `documento_idDocumento`) VALUES 
 ('R-101-24-CS-UNPA.pdf', 'documentos/000/000/001/R-101-24-CS-UNPA.pdf', @doc1_id);
 INSERT INTO `kosten`.`etiqueta` (`documento_idDocumento`, `palabraClave_idPalabraClave`) VALUES (@doc1_id, 1), (@doc1_id, 2), (@doc1_id, 3), (@doc1_id, 4);
@@ -127,7 +127,7 @@ INSERT INTO `kosten`.`etiqueta` (`documento_idDocumento`, `palabraClave_idPalabr
 -- REGLA: D-numero-año-[UnidadEjecutora] (Usando UART)
 INSERT INTO `kosten`.`documento` (`titulo`, `resumen`, `activo`, `fechaCreacion`, `numDocumento`, `tipoDocumento_idTipoDocumento`, `estado_idestado`, `sector_idSector`, `unidadEjecutora_idUnidadEjecutora`) VALUES
 ('Designación de Nuevo Personal', 'Nombramiento de personal administrativo para el área de secretaría académica.', True,'2024-10-12', 'D-52-24-UART', 3, 1, 2, 4);
-INSERT INTO `kosten`.`registro` (`fechaCarga`, `tipoOperacion`, `usuarioResponsable_idUsuario`, `documentoAfectado_idDocumento`) VALUES ('2024-10-13', 'CREAR', 2, @doc2_id);
+INSERT INTO `kosten`.`registro` (`fechaCarga`, `tipoOperacion`, `usuarioResponsable_idUsuario`, `documentoAfectado_idDocumento`) VALUES ('2024-10-13', 'Registrar', 2, @doc2_id);
 INSERT INTO `kosten`.`archivo` (`nombre`, `url`, `documento_idDocumento`) VALUES 
 ('D-52-24-UART.pdf', 'documentos/000/000/002/D-52-24-UART.pdf', @doc2_id),
 ('D-52-24-UART-anexo-A.pdf', 'documentos/000/000/002/D-52-24-UART-anexo-A.pdf', @doc2_id);
@@ -137,7 +137,7 @@ INSERT INTO `kosten`.`etiqueta` (`documento_idDocumento`, `palabraClave_idPalabr
 -- REGLA: R-numero-año-CS-UNPA
 INSERT INTO `kosten`.`documento` (`titulo`, `resumen`, `activo`,`fechaCreacion`, `numDocumento`, `tipoDocumento_idTipoDocumento`, `estado_idestado`, `sector_idSector`, `unidadEjecutora_idUnidadEjecutora`) VALUES
 ('Llamado a Licitación Pública N°5', 'Convocatoria para la licitación del servicio de mantenimiento de infraestructura edilicia.', True ,'2024-10-11', 'R-102-24-CS-UNPA', 2, 1, 3, 1);
-INSERT INTO `kosten`.`registro` (`fechaCarga`, `tipoOperacion`, `usuarioResponsable_idUsuario`, `documentoAfectado_idDocumento`) VALUES ('2024-10-12', 'CREAR', 2, @doc3_id);
+INSERT INTO `kosten`.`registro` (`fechaCarga`, `tipoOperacion`, `usuarioResponsable_idUsuario`, `documentoAfectado_idDocumento`) VALUES ('2024-10-12', 'Registrar', 2, @doc3_id);
 INSERT INTO `kosten`.`archivo` (`nombre`, `url`, `documento_idDocumento`) VALUES 
 ('R-102-24-CS-UNPA.pdf', 'documentos/000/000/003/R-102-24-CS-UNPA.pdf', @doc3_id);
 INSERT INTO `kosten`.`etiqueta` (`documento_idDocumento`, `palabraClave_idPalabraClave`) VALUES (@doc3_id, 9), (@doc3_id, 10), (@doc3_id, 11), (@doc3_id, 12);
@@ -146,7 +146,7 @@ INSERT INTO `kosten`.`etiqueta` (`documento_idDocumento`, `palabraClave_idPalabr
 -- REGLA: O-numero-año-CS-UNPA
 INSERT INTO `kosten`.`documento` (`titulo`, `resumen`, `activo`, `fechaCreacion`, `numDocumento`, `tipoDocumento_idTipoDocumento`, `estado_idestado`, `sector_idSector`, `unidadEjecutora_idUnidadEjecutora`) VALUES
 ('Calendario Académico 2025', 'Establecimiento de las fechas de inicio, finalización de cuatrimestres y mesas de examen.', True,'2024-09-30', 'O-003-24-CS-UNPA', 5, 2, 4, 1);
-INSERT INTO `kosten`.`registro` (`fechaCarga`, `tipoOperacion`, `usuarioResponsable_idUsuario`, `documentoAfectado_idDocumento`) VALUES ('2024-10-01', 'CREAR', 2, @doc4_id);
+INSERT INTO `kosten`.`registro` (`fechaCarga`, `tipoOperacion`, `usuarioResponsable_idUsuario`, `documentoAfectado_idDocumento`) VALUES ('2024-10-01', 'Registrar', 2, @doc4_id);
 INSERT INTO `kosten`.`archivo` (`nombre`, `url`, `documento_idDocumento`) VALUES 
 ('O-003-24-CS-UNPA.pdf', 'documentos/000/000/004/O-003-24-CS-UNPA.pdf', @doc4_id);
 INSERT INTO `kosten`.`etiqueta` (`documento_idDocumento`, `palabraClave_idPalabraClave`) VALUES (@doc4_id, 13), (@doc4_id, 14), (@doc4_id, 15), (@doc4_id, 16);
@@ -155,7 +155,7 @@ INSERT INTO `kosten`.`etiqueta` (`documento_idDocumento`, `palabraClave_idPalabr
 -- REGLA: C-numero-año-[UnidadEjecutora] (Usando UACO)
 INSERT INTO `kosten`.`documento` (`titulo`, `resumen`, `activo`, `fechaCreacion`, `numDocumento`, `tipoDocumento_idTipoDocumento`, `estado_idestado`, `sector_idSector`, `unidadEjecutora_idUnidadEjecutora`) VALUES
 ('Protocolo de Bioseguridad', 'Actualización de las medidas y protocolos de seguridad e higiene para los laboratorios.', True,'2024-09-25', 'C-015-24-UACO', 4, 3, 5, 3);
-INSERT INTO `kosten`.`registro` (`fechaCarga`, `tipoOperacion`, `usuarioResponsable_idUsuario`, `documentoAfectado_idDocumento`) VALUES ('2024-09-26', 'CREAR', 2, @doc5_id);
+INSERT INTO `kosten`.`registro` (`fechaCarga`, `tipoOperacion`, `usuarioResponsable_idUsuario`, `documentoAfectado_idDocumento`) VALUES ('2024-09-26', 'Registrar', 2, @doc5_id);
 INSERT INTO `kosten`.`archivo` (`nombre`, `url`, `documento_idDocumento`) VALUES 
 ('C-015-24-UACO.pdf', 'documentos/000/000/005/C-015-24-UACO.pdf', @doc5_id);
 INSERT INTO `kosten`.`etiqueta` (`documento_idDocumento`, `palabraClave_idPalabraClave`) VALUES (@doc5_id, 17), (@doc5_id, 18), (@doc5_id, 19), (@doc5_id, 20);
@@ -164,7 +164,7 @@ INSERT INTO `kosten`.`etiqueta` (`documento_idDocumento`, `palabraClave_idPalabr
 -- REGLA: O-numero-año-CS-UNPA
 INSERT INTO `kosten`.`documento` (`titulo`, `resumen`, `activo`, `fechaCreacion`, `numDocumento`, `tipoDocumento_idTipoDocumento`, `estado_idestado`, `sector_idSector`, `unidadEjecutora_idUnidadEjecutora`) VALUES
 ('Modificación Plan de Estudios', 'Ajustes en la currícula de la carrera de Analista de Sistemas.', True, '2024-09-22', 'O-004-24-CS-UNPA', 5, 1, 4, 1);
-INSERT INTO `kosten`.`registro` (`fechaCarga`, `tipoOperacion`, `usuarioResponsable_idUsuario`, `documentoAfectado_idDocumento`) VALUES ('2024-09-23', 'CREAR', 2, @doc6_id);
+INSERT INTO `kosten`.`registro` (`fechaCarga`, `tipoOperacion`, `usuarioResponsable_idUsuario`, `documentoAfectado_idDocumento`) VALUES ('2024-09-23', 'Registrar', 2, @doc6_id);
 INSERT INTO `kosten`.`archivo` (`nombre`, `url`, `documento_idDocumento`) VALUES 
 ('O-004-24-CS-UNPA.pdf', 'documentos/000/000/006/O-004-24-CS-UNPA.pdf', @doc6_id);
 INSERT INTO `kosten`.`etiqueta` (`documento_idDocumento`, `palabraClave_idPalabraClave`) VALUES (@doc6_id, 21), (@doc6_id, 22), (@doc6_id, 23), (@doc6_id, 24), (@doc6_id, 25);
@@ -173,7 +173,7 @@ INSERT INTO `kosten`.`etiqueta` (`documento_idDocumento`, `palabraClave_idPalabr
 -- REGLA: R-numero-año-CS-UNPA
 INSERT INTO `kosten`.`documento` (`titulo`, `resumen`, `activo`, `fechaCreacion`, `numDocumento`, `tipoDocumento_idTipoDocumento`, `estado_idestado`, `sector_idSector`, `unidadEjecutora_idUnidadEjecutora`) VALUES
 ('Rectificación de Fechas Calendario 2025', 'Se rectifican las fechas de mesas de examen del segundo cuatrimestre del Calendario Académico 2025.', True, '2025-03-10', 'R-001-25-CS-UNPA', 2, 1, 4, 1);
-INSERT INTO `kosten`.`registro` (`fechaCarga`, `tipoOperacion`, `usuarioResponsable_idUsuario`, `documentoAfectado_idDocumento`) VALUES ('2025-03-11', 'CREAR', 2, @doc7_id);
+INSERT INTO `kosten`.`registro` (`fechaCarga`, `tipoOperacion`, `usuarioResponsable_idUsuario`, `documentoAfectado_idDocumento`) VALUES ('2025-03-11', 'Registrar', 2, @doc7_id);
 INSERT INTO `kosten`.`archivo` (`nombre`, `url`, `documento_idDocumento`) VALUES 
 ('R-001-25-CS-UNPA.pdf', 'documentos/000/000/007/R-001-25-CS-UNPA.pdf', @doc7_id);
 INSERT INTO `kosten`.`etiqueta` (`documento_idDocumento`, `palabraClave_idPalabraClave`) VALUES (@doc7_id, 26), (@doc7_id, 15), (@doc7_id, 13), (@doc7_id, 16);
@@ -182,7 +182,7 @@ INSERT INTO `kosten`.`etiqueta` (`documento_idDocumento`, `palabraClave_idPalabr
 -- REGLA: D-numero-año-[UnidadEjecutora] (Usando UASJ)
 INSERT INTO `kosten`.`documento` (`titulo`, `resumen`, `activo`, `fechaCreacion`, `numDocumento`, `tipoDocumento_idTipoDocumento`, `estado_idestado`, `sector_idSector`, `unidadEjecutora_idUnidadEjecutora`) VALUES
 ('Creación Comisión de Seguimiento Presupuestario', 'Se crea una comisión ad-hoc para el seguimiento de la ejecución de las partidas del Presupuesto Anual 2024.', True,'2024-11-05', 'D-080-24-UASJ', 3, 1, 1, 2);
-INSERT INTO `kosten`.`registro` (`fechaCarga`, `tipoOperacion`, `usuarioResponsable_idUsuario`, `documentoAfectado_idDocumento`) VALUES ('2024-11-06', 'CREAR', 2, @doc8_id);
+INSERT INTO `kosten`.`registro` (`fechaCarga`, `tipoOperacion`, `usuarioResponsable_idUsuario`, `documentoAfectado_idDocumento`) VALUES ('2024-11-06', 'Registrar', 2, @doc8_id);
 INSERT INTO `kosten`.`archivo` (`nombre`, `url`, `documento_idDocumento`) VALUES 
 ('D-080-24-UASJ.pdf', 'documentos/000/0TA/000/008/D-080-24-UASJ.pdf', @doc8_id);
 INSERT INTO `kosten`.`etiqueta` (`documento_idDocumento`, `palabraClave_idPalabraClave`) VALUES (@doc8_id, 27), (@doc8_id, 28), (@doc8_id, 29), (@doc8_id, 30);
@@ -191,7 +191,7 @@ INSERT INTO `kosten`.`etiqueta` (`documento_idDocumento`, `palabraClave_idPalabr
 -- REGLA: O-numero-año-CS-UNPA
 INSERT INTO `kosten`.`documento` (`titulo`, `resumen`, `activo`, `fechaCreacion`, `numDocumento`, `tipoDocumento_idTipoDocumento`, `estado_idestado`, `sector_idSector`, `unidadEjecutora_idUnidadEjecutora`) VALUES
 ('Nuevo Protocolo de Bioseguridad 2025', 'Se establece el nuevo protocolo de bioseguridad para el ciclo lectivo 2025, derogando normativas anteriores.', True,'2025-02-20', 'O-001-25-CS-UNPA', 5, 1, 4, 1);
-INSERT INTO `kosten`.`registro` (`fechaCarga`, `tipoOperacion`, `usuarioResponsable_idUsuario`, `documentoAfectado_idDocumento`) VALUES ('2025-02-21', 'CREAR', 2, @doc9_id);
+INSERT INTO `kosten`.`registro` (`fechaCarga`, `tipoOperacion`, `usuarioResponsable_idUsuario`, `documentoAfectado_idDocumento`) VALUES ('2025-02-21', 'Registrar', 2, @doc9_id);
 INSERT INTO `kosten`.`archivo` (`nombre`, `url`, `documento_idDocumento`) VALUES 
 ('O-001-25-CS-UNPA.pdf', 'documentos/000/000/009/O-001-25-CS-UNPA.pdf', @doc9_id);
 INSERT INTO `kosten`.`etiqueta` (`documento_idDocumento`, `palabraClave_idPalabraClave`) VALUES (@doc9_id, 31), (@doc9_id, 17), (@doc9_id, 18), (@doc9_id, 32);
@@ -200,7 +200,7 @@ INSERT INTO `kosten`.`etiqueta` (`documento_idDocumento`, `palabraClave_idPalabr
 -- REGLA: C-numero-año-[UnidadEjecutora] (Usando UARG)
 INSERT INTO `kosten`.`documento` (`titulo`, `resumen`, `activo`, `fechaCreacion`, `numDocumento`, `tipoDocumento_idTipoDocumento`, `estado_idestado`, `sector_idSector`, `unidadEjecutora_idUnidadEjecutora`) VALUES
 ('Aclaratoria sobre Licitación Pública N°5', 'Se emite circular aclaratoria sobre los pliegos y condiciones de la Licitación Pública N°5 para mantenimiento.', True,'2024-10-25', 'C-020-24-UARG', 4, 1, 3, 5);
-INSERT INTO `kosten`.`registro` (`fechaCarga`, `tipoOperacion`, `usuarioResponsable_idUsuario`, `documentoAfectado_idDocumento`) VALUES ('2024-10-26', 'CREAR', 2, @doc10_id);
+INSERT INTO `kosten`.`registro` (`fechaCarga`, `tipoOperacion`, `usuarioResponsable_idUsuario`, `documentoAfectado_idDocumento`) VALUES ('2024-10-26', 'Registrar', 2, @doc10_id);
 INSERT INTO `kosten`.`archivo` (`nombre`, `url`, `documento_idDocumento`) VALUES 
 ('C-020-24-UARG.pdf', 'documentos/000/000/010/C-020-24-UARG.pdf', @doc10_id),
 ('C-020-24-UARG-anexo-B.pdf', 'documentos/000/000/010/C-020-24-UARG-anexo-B.pdf', @doc10_id);
@@ -210,7 +210,7 @@ INSERT INTO `kosten`.`etiqueta` (`documento_idDocumento`, `palabraClave_idPalabr
 -- REGLA: A-numero-año-CU-[UnidadEjecutora] (Usando UACO)
 INSERT INTO `kosten`.`documento` (`titulo`, `resumen`, `activo`, `fechaCreacion`, `numDocumento`, `tipoDocumento_idTipoDocumento`, `estado_idestado`, `sector_idSector`, `unidadEjecutora_idUnidadEjecutora`) VALUES
 ('Acuerdo de Cooperación Académica UACO', 'Se firma un acuerdo de cooperación e intercambio estudiantil con la Unidad Académica Caleta Olivia.', True,'2024-11-20', 'A-012-24-CU-UACO', 1, 1, 2, 3);
-INSERT INTO `kosten`.`registro` (`fechaCarga`, `tipoOperacion`, `usuarioResponsable_idUsuario`, `documentoAfectado_idDocumento`) VALUES ('2024-11-21', 'CREAR', 2, @doc11_id);
+INSERT INTO `kosten`.`registro` (`fechaCarga`, `tipoOperacion`, `usuarioResponsable_idUsuario`, `documentoAfectado_idDocumento`) VALUES ('2024-11-21', 'Registrar', 2, @doc11_id);
 INSERT INTO `kosten`.`archivo` (`nombre`, `url`, `documento_idDocumento`) VALUES 
 ('A-012-24-CU-UACO.pdf', 'documentos/000/000/011/A-012-24-CU-UACO.pdf', @doc11_id);
 INSERT INTO `kosten`.`etiqueta` (`documento_idDocumento`, `palabraClave_idPalabraClave`) VALUES (@doc11_id, 8), (@doc11_id, 14), (@doc11_id, 23);
