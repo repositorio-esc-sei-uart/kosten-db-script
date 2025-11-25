@@ -220,7 +220,7 @@ CREATE TABLE IF NOT EXISTS `kosten`.`registro` (
   `idRegistro` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `fechaCarga` DATE NULL,
   `tipoOperacion` VARCHAR(45) NOT NULL,
-  `usuarioResponsable_idUsuario` BIGINT(20) UNSIGNED NOT NULL,
+  `usuarioResponsable_idUsuario` BIGINT(20) UNSIGNED NULL,
   `documentoAfectado_idDocumento` BIGINT(20) UNSIGNED NULL,
   `usuarioAfectado_idUsuario` BIGINT(20) UNSIGNED NULL,
   PRIMARY KEY (`idRegistro`),
@@ -233,20 +233,21 @@ CREATE TABLE IF NOT EXISTS `kosten`.`registro` (
   CONSTRAINT `fk_registro_usuario_responsable`
     FOREIGN KEY (`usuarioResponsable_idUsuario`)
     REFERENCES `kosten`.`usuario` (`idUsuario`)
-    ON DELETE NO ACTION
+    ON DELETE SET NULL
     ON UPDATE NO ACTION,
 -- FK para el Documento Afectado
   CONSTRAINT `fk_registro_documento_afectado`
     FOREIGN KEY (`documentoAfectado_idDocumento`)
     REFERENCES `kosten`.`documento` (`idDocumento`)
-    ON DELETE NO ACTION
+    ON DELETE SET NULL
     ON UPDATE NO ACTION,
 -- FK para el Usuario Afectado
   CONSTRAINT `fk_registro_usuario_afectado`
     FOREIGN KEY (`usuarioAfectado_idUsuario`)
     REFERENCES `kosten`.`usuario` (`idUsuario`)
-    ON DELETE NO ACTION
+    ON DELETE SET NULL
     ON UPDATE NO ACTION
+
 )
 ENGINE = InnoDB;
 
